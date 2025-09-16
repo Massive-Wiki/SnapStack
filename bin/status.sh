@@ -11,8 +11,10 @@
 #
 # Notes:
 #   - "0 rows" means Pinata hasn't recorded a status for that CID yet.
+#   - That state can mean: not pinned yet, never pinned, already pinned (and moved
+#     out of the queue), or expired/purged.
 #   - In --watch mode, we poll until status leaves {prechecking,retrieving}
-#     or until the record disappears (0 rows).
+#     or until no rows exist.
 
 set -euo pipefail
 
@@ -104,6 +106,7 @@ print_summary() {
   if [[ "$count" -eq 0 ]]; then
     echo "cid: ${CID}"
     echo "status: no_record_yet"
+    echo "(note: this can mean not pinned yet, never pinned, already pinned, or expired)"
     return 0
   fi
 
