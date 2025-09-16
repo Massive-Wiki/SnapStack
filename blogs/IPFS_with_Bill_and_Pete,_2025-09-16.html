@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPFS with Bill and Pete, 2025-09-16 - SnapStack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//markpub-static/css/style.css">
+    <link rel="stylesheet" href="//markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="//lunr-index-1758040826.4055727.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="//lunr-posts-1758040826.4055727.js"></script>
+    <script> function randomPageLink() { return "/"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="//index.html">SnapStack</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="//README.html">HOME</a></li>
+<li><a href="//search.html">SEARCH</a></li>
+<li><a href="//all-pages.html">ALL PAGES</a></li>
+<li><a href="//recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/Massive-Wiki/SnapStack/edit/main/blogs/IPFS with Bill and Pete, 2025-09-16.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>IPFS with Bill and Pete, 2025-09-16</h1>
+<h2>What's a folio?</h2>
+<p>We're using "folio" to refer to a group of files in a folder and subfolders. The same thing as a "wiki" in Massive Wiki, or a "vault" in Obsidian, or a "repo" in Git.</p>
+<h2>Publishing a folio (quickstart)</h2>
+<ul>
+<li>run your local IPFS daemon so you have an IPFS node running</li>
+<li>do <code>ipfs add</code> of your folio top-level folder to get a CID</li>
+<li>pin the CID with a pinning service like Pinata
+<ul>
+<li>requires an "pin by CID" or "upload from IPFS" facility in the pinning service</li>
+<li>for Pinata, we do this via an API call via <code>curl</code> or other means</li>
+</ul>
+</li>
+<li>confirm that the CID is pinned</li>
+<li>at this point, the pinning service has taken responsibility for sharing the folio, and if your IPFS node goes offline (because you stop it, or your computer goes to sleep, etc) your folio is still available</li>
+<li>share the CID</li>
+</ul>
+<h2>Publishing a folio directly with a pinning service</h2>
+<p>Pinning services usually have a way to upload your folio to their service, and then you'll get a CID that way.</p>
+<p>This is convenient, but not as general, so we prefer to teach people the "Publishing a folio (quickstart)" method.</p>
+<h2>How to share a published folio</h2>
+<p>For people who don't know what IPFS is, it's often best to share a web URL they can use to view or download your folio.</p>
+<p>Here are some fairly canonical gateways:</p>
+<ul>
+<li>
+<p><strong>ipfs.io</strong> — the original public IPFS gateway, run by Protocol Labs.
+Example: <code>https://ipfs.io/ipfs/&lt;CID&gt;</code></p>
+</li>
+<li>
+<p><strong>dweb.link</strong> — a public IPFS gateway maintained by the IPFS Foundation.
+Example: <code>https://dweb.link/ipfs/&lt;CID&gt;</code></p>
+</li>
+</ul>
+<p>The next step up the learning curve is to let people know:</p>
+<ul>
+<li>Folios (and any information in IPFS) can be retrieved via "gateways", which work like web sites on the viewing side, and know how to retrieve data from IPFS.</li>
+<li>Gateways are more or less interchangeable.</li>
+<li>That a CID is a unique identifier for a folio. (In SnapStack, we'll also use IPNS to make the identifier persistent over versions.)</li>
+<li>With these data points, you can share one or two gateways URLs and the CID; hopefully your recipient will notice how URLs are constructed from the gateway prefix and the CID.</li>
+</ul>
+
+      
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>SnapStack</strong> by the Massive Wiki Team.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/Massive-Wiki/SnapStack">SnapStack</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Tuesday, September 16, 2025 at 16:40 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

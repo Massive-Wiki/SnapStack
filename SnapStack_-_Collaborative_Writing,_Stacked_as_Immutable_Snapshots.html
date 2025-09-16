@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapStack - Collaborative Writing, Stacked as Immutable Snapshots - SnapStack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//markpub-static/css/style.css">
+    <link rel="stylesheet" href="//markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="//lunr-index-1758040826.4055727.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="//lunr-posts-1758040826.4055727.js"></script>
+    <script> function randomPageLink() { return "/"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="//index.html">SnapStack</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="//README.html">HOME</a></li>
+<li><a href="//search.html">SEARCH</a></li>
+<li><a href="//all-pages.html">ALL PAGES</a></li>
+<li><a href="//recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/Massive-Wiki/SnapStack/edit/main/SnapStack - Collaborative Writing, Stacked as Immutable Snapshots.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>SnapStack - Collaborative Writing, Stacked as Immutable Snapshots</h1>
+<h2>What IPFS gives you (in this context)</h2>
+<ul>
+<li><strong>Immutable snapshots</strong>: every <code>ipfs add -r folder/</code> returns a new <strong>CID</strong> that cryptographically matches the exact bytes of that version. (<a href="https://docs.ipfs.tech/quickstart/publish_cli/">docs.ipfs.tech</a>)</li>
+<li><strong>A moving pointer</strong>: publish the <em>current</em> snapshot under an <strong>IPNS</strong> name, then update that pointer whenever you re-add your folder. Peers fetch via your stable IPNS address. (<a href="https://docs.ipfs.tech/concepts/ipns/">docs.ipfs.tech</a>)</li>
+<li><strong>Decide who persists it</strong>: any peer (including you) can <strong>pin</strong> the CID to keep it around; you can also use remote pinning services. (<a href="https://docs.ipfs.tech/how-to/pin-files/">docs.ipfs.tech</a>, <a href="https://docs.pinata.cloud/ipfs-101/what-is-ipfs-pinning">docs.pinata.cloud</a>)</li>
+</ul>
+<h2>Minimal setup (Kubo CLI)</h2>
+<ol>
+<li>Install Kubo (<code>ipfs</code>) and init:</li>
+</ol>
+<pre><code class="language-bash"># macOS
+brew install ipfs
+ipfs init
+ipfs daemon
+</code></pre>
+<p>Docs: install, init, and basic CLI. (<a href="https://docs.ipfs.tech/install/command-line/">docs.ipfs.tech</a>)</p>
+<ol>
+<li>Add your text collection and get a CID:</li>
+</ol>
+<pre><code class="language-bash">ipfs add -Qr /path/to/texts     # -Q = quiet (just the CID), -r = recursive
+</code></pre>
+<p>Re-running <code>ipfs add -r</code> after edits yields a <strong>new top-level CID</strong> (subfiles’ CIDs stay the same if unchanged). (<a href="https://stackoverflow.com/questions/39803954/ipfs-how-to-add-a-file-to-an-existing-folder">Stack Overflow</a>)</p>
+<ol>
+<li>Create (once) and publish an IPNS name:</li>
+</ol>
+<pre><code class="language-bash">ipfs key gen --type=rsa --size=2048 texts-key
+ipfs name publish --key=texts-key &lt;CID_FROM_STEP_2&gt;
+# Output looks like: Published to k51q...: /ipfs/&lt;CID&gt;
+</code></pre>
+<p>IPNS is a mutable pointer you can republish to when the CID changes; nodes periodically rebroadcast the record. (<a href="https://docs.ipfs.tech/concepts/ipns/">docs.ipfs.tech</a>)</p>
+<ol>
+<li>Peers fetch &amp; pin:</li>
+</ol>
+<pre><code class="language-bash"># Using the CID directly
+ipfs pin add &lt;CID&gt;
+
+# Or follow your IPNS name to the current CID, then pin:
+ipfs name resolve k51q...             # shows /ipfs/&lt;currentCID&gt;
+ipfs pin add &lt;currentCID&gt;
+</code></pre>
+<p>About pinning (local or via a remote service). (<a href="https://docs.ipfs.tech/how-to/pin-files/">docs.ipfs.tech</a>, <a href="https://docs.pinata.cloud/ipfs-101/what-is-ipfs-pinning">docs.pinata.cloud</a>)</p>
+<h2>Updating your shared set</h2>
+<p>Each time you edit files:</p>
+<pre><code class="language-bash">NEWCID=$(ipfs add -Qr /path/to/texts)
+ipfs name publish --key=texts-key $NEWCID
+</code></pre>
+<p>That’s it—your <strong>IPNS</strong> address stays the same; it just points to the latest snapshot. (Under the hood, directory CIDs change when contents change.) (<a href="https://stackoverflow.com/questions/39803954/ipfs-how-to-add-a-file-to-an-existing-folder">Stack Overflow</a>)</p>
+<h2>Optional niceties</h2>
+<ul>
+<li><strong>Browser convenience</strong>: install IPFS Companion so <code>ipfs://</code> and <code>ipns://</code> links resolve via your local node or a gateway. (<a href="https://chromewebstore.google.com/detail/ipfs-companion/nibjojkomfdiaoajekhjakgkdhaomnch?hl=en&amp;utm_source=chatgpt.com">Chrome Web Store</a>)</li>
+<li><strong>Command quickstart references</strong>: Kubo CLI basics &amp; publish-from-CLI docs. (<a href="https://docs.ipfs.tech/how-to/kubo-basic-cli/">docs.ipfs.tech</a>)</li>
+</ul>
+<h2>Trade-offs to know</h2>
+<ul>
+<li><strong>Not a two-way sync/merge</strong>: IPFS doesn’t resolve edit conflicts; think “publish signed snapshots,” not collaborative diffing.</li>
+<li><strong>IPNS latency</strong>: updates are near-real-time but not instant; IPNS records propagate on a schedule (rebroadcast by default). For most small groups this is fine; if you need stricter SLAs, coordinate via chat and pin the new CID directly. (<a href="https://docs.ipfs.tech/concepts/ipns/">docs.ipfs.tech</a>)</li>
+</ul>
+<p>love this direction. here’s a lightweight, low-drama set of “how we work” rules for a small group (3–10 people) using IPFS/IPNS as a publish-signed-snapshot workflow for a Markdown collection.</p>
+<h1>Workflow rules for SnapStack</h1>
+<h2>0) Ground rules (philosophy)</h2>
+<ul>
+<li><strong>Snapshots, not merges.</strong> We publish complete, immutable snapshots (CIDs). We avoid concurrent edits to the same files.</li>
+<li><strong>One stable pointer.</strong> There is a single “main” IPNS name that always points to the latest accepted release.</li>
+<li><strong>Low ceremony, just enough structure.</strong> Clear ownership and short checklists replace heavy tooling.</li>
+</ul>
+<hr />
+<h2>1) Roles</h2>
+<ul>
+<li><strong>Maintainer of Record (MoR):</strong> owns the <em>main</em> IPNS key and publishes accepted releases to it.</li>
+<li><strong>Contributors:</strong> anyone who proposes a new snapshot (their own CID) for inclusion.</li>
+<li><strong>Backup Maintainer:</strong> holds an escrow copy of the main IPNS key (sealed) and can rotate if MoR disappears.</li>
+</ul>
+<blockquote>
+<p>Tip: every contributor may also create a <strong>personal IPNS</strong> key to share work-in-progress or proposals.</p>
+</blockquote>
+<hr />
+<h2>2) Directory &amp; docs (in the repo itself)</h2>
+<pre><code>/ (root of the snapshot)
+  /docs/…                # markdown content
+  /assets/…              # images, diagrams
+  /scripts/…             # helper scripts (publish, validate)
+  CONTRIBUTING.md        # how to propose changes (this doc distilled)
+  STYLE.md               # headings, links, filenames, TOC rules
+  CHANGELOG.md           # human-readable release notes (top entry = tip)
+  MANIFEST.json          # machine-readable: CID, parentCID, author, date, summary, version
+  LICENSE
+  README.md              # what this collection is, how to fetch latest
+</code></pre>
+<p><strong>MANIFEST.json</strong> (one line JSON, easy to diff/view):</p>
+<pre><code class="language-json">{
+  "cid": "bafy…", "parent_cid": "bafy…",
+  "version": "2025.08.29-1",
+  "timestamp": "2025-08-29T16:45:00-07:00",
+  "author": "Alice &lt;alice@example.org&gt;",
+  "summary": "Fix typos in 03-intro.md; add diagram alt text; linkcheck clean",
+  "files_changed": ["docs/03-intro.md", "assets/flow-1.png"]
+}
+</code></pre>
+<hr />
+<h2>3) Versioning</h2>
+<ul>
+<li><strong>Date-based + counter:</strong> <code>YYYY.MM.DD-N</code> (e.g., <code>2025.08.29-1</code>). Reset <code>-N</code> each day.</li>
+<li><strong>SemVer is fine</strong> if you think in features; for documents, date-based keeps it simple.</li>
+<li>The <strong>MoR</strong> increments version on publish to <em>main</em>.</li>
+</ul>
+<hr />
+<h2>4) The happy path (90% of the time)</h2>
+<h3>A) Prepare your proposal (Contributor)</h3>
+<ol>
+<li>
+<p><strong>Sync latest:</strong> resolve main IPNS → <code>CURRENT_CID</code>. Fetch/pin and work from that.</p>
+</li>
+<li>
+<p><strong>Edit locally.</strong> Follow <code>STYLE.md</code>.</p>
+</li>
+<li>
+<p><strong>Self-check:</strong></p>
+<ul>
+<li>run <code>scripts/validate.sh</code> (spelling, markdown lint, linkcheck)</li>
+<li>update <code>CHANGELOG.md</code> (top entry) and <code>MANIFEST.json</code> (leave <code>cid</code> empty for now; set <code>parent_cid</code> to <code>CURRENT_CID</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Build your snapshot:</strong> <code>NEW_CID=$(ipfs add -Qr .)</code></p>
+</li>
+<li>
+<p><strong>Freeze manifest:</strong> write <code>NEW_CID</code> into <code>MANIFEST.json</code>’s <code>cid</code> field.</p>
+</li>
+<li>
+<p><strong>Share proposal:</strong> post <code>NEW_CID</code> + short summary (and a diff link if you keep a Git mirror—optional).</p>
+</li>
+</ol>
+<h3>B) Review &amp; accept (MoR)</h3>
+<ol>
+<li><strong>Resolve proposal:</strong> <code>ipfs get NEW_CID</code> (or browse via gateway).</li>
+<li><strong>Run <code>scripts/validate.sh</code></strong> yourself (don’t trust; verify).</li>
+<li><strong>Quick editorial review:</strong> spot-check changed files; ensure <code>CHANGELOG.md</code> + <code>MANIFEST.json</code> sane.</li>
+<li><strong>Publish to main:</strong> <code>ipfs name publish --key=main-key NEW_CID</code></li>
+<li><strong>Announce:</strong> post the new version string, <code>NEW_CID</code>, and the CHANGELOG entry.</li>
+<li><strong>Pin policy:</strong> ask everyone (or your pinning service) to pin <code>NEW_CID</code>. Optionally unpin <code>parent_cid</code> after grace period.</li>
+</ol>
+<hr />
+<h2>5) Light conflict avoidance</h2>
+<ul>
+<li><strong>Soft locks in chat:</strong> “I’m editing <code>docs/03-intro.md</code> for the next hour.” Keep locks short; edit small.</li>
+<li><strong>Small PRs:</strong> prefer small, focused changesets to reduce overlap.</li>
+<li><strong>If you collide:</strong> the version published to main wins. The other contributor rebases their edits on top of the new main (see §7).</li>
+</ul>
+<hr />
+<h2>6) Trust &amp; keys</h2>
+<ul>
+<li><strong>Main IPNS key custody:</strong> stored offline by MoR; escrow sealed copy with Backup Maintainer.</li>
+<li><strong>Personal IPNS keys:</strong> contributors use these for proposals or personal snapshots.</li>
+<li><strong>Key rotation:</strong> if compromised, announce rotation, generate new main key, republish latest <code>NEW_CID</code> under the new IPNS. Update <code>README.md</code>.</li>
+</ul>
+<hr />
+<h2>7) Rebasing your local edits (when someone beats you to publish)</h2>
+<ol>
+<li>Note your <strong>work-in-progress CID</strong> (WIP_CID).</li>
+<li>Pull latest main → <code>BASE_CID</code>.</li>
+<li>Reapply your changes on top of <code>BASE_CID</code> (manual since no merges). Keep edits small; copy over files you changed.</li>
+<li>Produce a fresh <code>NEW_CID</code>, set <code>parent_cid</code> = <code>BASE_CID</code>, reshare proposal.</li>
+</ol>
+<hr />
+<h2>8) Pinning &amp; retention</h2>
+<ul>
+<li><strong>Everyone pins main’s latest CID.</strong> That keeps content reliably fetchable.</li>
+<li><strong>Remote pinning:</strong> at least one shared pinning service (e.g., community account) + one independent peer.</li>
+<li><strong>Retention window:</strong> keep the last <strong>5</strong> releases pinned; older ones can be unpinned unless cited.</li>
+</ul>
+<hr />
+<h2>9) Quality gates (fast, local)</h2>
+<ul>
+<li><strong>Markdown lint:</strong> headings, links, trailing spaces.</li>
+<li><strong>Spellcheck:</strong> allowlist project terms.</li>
+<li><strong>Linkcheck:</strong> external links (skip on flaky networks with a flag).</li>
+<li><strong>Optional build:</strong> if you generate HTML/PDF from docs, run it locally to catch broken assets.</li>
+</ul>
+<p>Put these in <code>scripts/validate.sh</code>.</p>
+<p><strong>Example <code>scripts/validate.sh</code> (bash):</strong></p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+# 1) markdownlint (install locally or via container)
+command -v markdownlint || echo "(!) install markdownlint for full checks"
+
+# 2) basic spelling with codespell if present
+if command -v codespell &gt;/dev/null; then
+  codespell -q 3 -S "assets/*,node_modules/*,vendor/*"
+fi
+
+# 3) rudimentary link check (skip gateways to avoid false negatives)
+if command -v lychee &gt;/dev/null; then
+  lychee --exclude "ipfs://|ipns://|localhost" --offline false docs || true
+fi
+
+echo "✓ basic validation done"
+</code></pre>
+<hr />
+<h2>10) Scripts (tiny helpers)</h2>
+<p><strong><code>scripts/publish_latest.sh</code> (run by MoR):</strong></p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+KEY_NAME="${KEY_NAME:-main-key}"
+
+# Ensure MANIFEST.json cid matches the tree we’re about to publish
+NEW_CID="$(ipfs add -Qr .)"
+MANIFEST_CID="$(jq -r .cid MANIFEST.json || true)"
+
+if [[ "$MANIFEST_CID" != "$NEW_CID" ]]; then
+  echo "Updating MANIFEST.json cid to $NEW_CID"
+  tmp="$(mktemp)"
+  jq --arg cid "$NEW_CID" '.cid=$cid' MANIFEST.json &gt; "$tmp" &amp;&amp; mv "$tmp" MANIFEST.json
+  NEW_CID="$(ipfs add -Qr .)"
+fi
+
+echo "Publishing $NEW_CID to IPNS key: $KEY_NAME"
+ipfs name publish --key="$KEY_NAME" "$NEW_CID"
+
+echo "Reminder: pin the new CID:"
+echo "  ipfs pin add $NEW_CID"
+</code></pre>
+<p><strong><code>scripts/adopt_new_release.sh</code> (for all peers):</strong></p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+IPNS_ADDR="${1:?Usage: adopt_new_release.sh &lt;ipns-name-or-peerid&gt;}"
+
+CURRENT="/ipfs/$(ipfs name resolve "$IPNS_ADDR" | sed 's|/ipfs/||')"
+CID="${CURRENT#/ipfs/}"
+
+echo "Latest main CID: $CID"
+ipfs pin add "$CID"
+echo "✓ pinned $CID"
+</code></pre>
+<hr />
+<h2>11) Communications</h2>
+<ul>
+<li><strong>Announce proposals:</strong> <code>NEW_CID</code>, 1–2 sentence summary, list of changed files.</li>
+<li><strong>Announce releases:</strong> version, <code>NEW_CID</code>, CHANGELOG excerpt, pin reminder.</li>
+<li><strong>Parking lot:</strong> if you’ll be offline, note any soft locks you’re dropping.</li>
+</ul>
+<hr />
+<h2>12) Backups &amp; mirrors (optional but handy)</h2>
+<ul>
+<li><strong>Git mirror (read-only):</strong> keep a Git repo that mirrors the current tree so reviewers can use normal diffs; store <code>MANIFEST.json</code> with the published CID for traceability.</li>
+<li><strong>CAR exports:</strong> for archival, export a CAR of each accepted CID and stash offsite.</li>
+<li><strong>Static site mirror:</strong> optionally build and publish HTML to a web host for easy browsing; link back to the authoritative CID.</li>
+</ul>
+<hr />
+<h2>13) SLAs &amp; latency expectations</h2>
+<ul>
+<li><strong>IPNS propagation:</strong> “minutes, not milliseconds.” If timing matters, share the <strong>CID</strong> directly in chat first; MoR updates IPNS soon after.</li>
+<li><strong>Review window:</strong> aim to accept/reject proposals within <strong>24h</strong> (or define your own cadence).</li>
+</ul>
+<hr />
+<h2>14) Security &amp; recovery</h2>
+<ul>
+<li><strong>Lost main key:</strong> rotate (new key), publish last accepted <code>CID</code> to the new IPNS, update <code>README.md</code> and notify.</li>
+<li><strong>Compromise suspected:</strong> freeze publishes, verify last good CID, rotate keys, resume.</li>
+</ul>
+<hr />
+<h2>15) Minimal checklist cards</h2>
+<p><strong>Contributor (before proposing):</strong></p>
+<ul>
+<li>[ ] Based on latest main (resolved today)</li>
+<li>[ ] Edited small, focused scope</li>
+<li>[ ] <code>validate.sh</code> passes (or notes recorded)</li>
+<li>[ ] <code>CHANGELOG.md</code> &amp; <code>MANIFEST.json</code> updated</li>
+<li>[ ] Built <code>NEW_CID</code> and shared summary</li>
+</ul>
+<p><strong>Maintainer (before publishing to main):</strong></p>
+<ul>
+<li>[ ] Fetched and validated <code>NEW_CID</code></li>
+<li>[ ] Changelog sane; manifest fields correct</li>
+<li>[ ] Publish to IPNS (<code>main-key</code>)</li>
+<li>[ ] Announce + pin policy enforced</li>
+</ul>
+<hr />
+<p>if you want, I can drop these files (<code>CONTRIBUTING.md</code>, <code>STYLE.md</code>, the two scripts, and a starter <code>MANIFEST.json</code>/<code>CHANGELOG.md</code>) into a ready-to-use skeleton you can <code>ipfs add -r</code> right away.</p>
+<h1>Optional SnapStack Hashchain</h1>
+<ol>
+<li>“Signed snapshots” (recommended baseline)</li>
+</ol>
+<p>Keep MANIFEST.json with cid, parent_cid, timestamp, author.</p>
+<p>Sign the manifest (ssh-sig, minisign/age, or GPG). Publish the signed tree to IPFS; update IPNS.</p>
+<p>Why it’s enough: anyone can verify the chain (parent_cid links) and the signature on each step.</p>
+<p>This is essentially a hash-chain; no extra infra beyond your existing workflow.</p>
+<ol start="2">
+<li>Add public timestamps (cheap, no new infra)</li>
+</ol>
+<p>Feed the CID (or manifest hash) into OpenTimestamps to anchor its existence time into Bitcoin via Merkle aggregation. You get a small .ots proof file that anyone can later verify.
+opentimestamps.org
+Bitcoin Stack Exchange</p>
+<p>When to add: you want “this snapshot existed no later than <date>” without running a chain.</p>
+<p>Suggested “SnapStack” recipe (simple + strong)</p>
+<p>Keep the MANIFEST.json with parent_cid chain (as you already planned).</p>
+<p>Sign each manifest (team-wide shared policy for keys).</p>
+<p>OpenTimestamps the manifest’s SHA-256 and store the .ots next to it.
+opentimestamps.org</p>
+<p>(Optional) Also post the tuple {cid, manifest hash, signature} to Rekor so anyone can audit via a public transparency log.</p>
+
+      
+      <hr>
+      <div>
+	<h4>Pages that link to this page</h4>
+	<ul>
+	  
+	  <li><a href="//README.html">README</a>
+	  
+	</ul>
+      </div>
+      
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>SnapStack</strong> by the Massive Wiki Team.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/Massive-Wiki/SnapStack">SnapStack</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Tuesday, September 16, 2025 at 16:40 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

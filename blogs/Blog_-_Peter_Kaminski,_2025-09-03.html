@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Peter Kaminski, 2025-09-03 - SnapStack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//markpub-static/css/style.css">
+    <link rel="stylesheet" href="//markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="//lunr-index-1758040826.4055727.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="//lunr-posts-1758040826.4055727.js"></script>
+    <script> function randomPageLink() { return "/"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="//index.html">SnapStack</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="//README.html">HOME</a></li>
+<li><a href="//search.html">SEARCH</a></li>
+<li><a href="//all-pages.html">ALL PAGES</a></li>
+<li><a href="//recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/Massive-Wiki/SnapStack/edit/main/blogs/Blog - Peter Kaminski, 2025-09-03.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>Blog - Peter Kaminski, 2025-09-03</h1>
+<h2>Published to IPFS!</h2>
+<p>First publication of SnapStack docs to IPFS!</p>
+<p>CID: QmPWweP44kueHdDzJyEd6KTv6rqj2rrgHWSJNAjNsyFJey</p>
+<p>The docs are pre-release and really rough, but I wanted to share them with Bill Anderson, and of course, IPFS is the way to go.</p>
+<h2>ipfs add: no dotfiles?</h2>
+<p>I'm using Obsidian to maintain this repository, so I wanted to ignore the <code>.obsidian</code> directory. I used the <code>--ignore-rules-path</code> flag and set it up to read <code>.gitignore</code>, but <code>ipfs add</code> also didn't add <code>.gitignore</code> or the <code>.snapstack</code> directory I set up (with a helper script for adding). So, it appears to ignore all dotfiles.</p>
+<h2>Pinning</h2>
+<p>As soon as the docs were up, my thoughts turned to pinning. As of 2025-09-03, the services I found:</p>
+<ul>
+<li>Pinata
+<ul>
+<li>$20/month, generous free tier, but web dashboard doesn't allow pin-by-CID for non-paid accounts</li>
+</ul>
+</li>
+<li>Filebase
+<ul>
+<li>$20/month, generous free tier</li>
+</ul>
+</li>
+<li>web3.storage, transitioning to Storacha
+<ul>
+<li>Looks fancy and cool, but it was complicated to figure out how to pin by CID</li>
+<li>Also, it's a little hard to tell what's Storacha, what's web3.storage, what's w3up, etc. as they go through integration / rebrand.</li>
+</ul>
+</li>
+</ul>
+<p>At some point, we might want to run a community IPFS node for pinning.</p>
+<p>The services that didn't resonate:</p>
+<ul>
+<li>Infura (now part of MetaMask): "Restricted access - New IPFS key creation is disabled for all users. Only IPFS keys that were active in late 2024 continue to have access to the IPFS network." <a href="https://docs.metamask.io/services/reference/ipfs/">https://docs.metamask.io/services/reference/ipfs/</a></li>
+<li>Fleek: Complicated by other services (compute, AI agent hosting, web app hosting, etc.)</li>
+<li>Temporal - dead for years</li>
+<li>Eternum - dying or dead</li>
+</ul>
+<p>I ended up pinning through Pinata's API. ChatGPT gave me v1 API commands (v3 is apparently the latest):</p>
+<p>Pin by CID</p>
+<pre><code class="language-bash">curl --request POST \
+  --url https://api.pinata.cloud/pinning/pinByHash \
+  --header 'Authorization: Bearer &lt;your_pinata_jwt&gt;' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "hashToPin": "QmYourCID"
+  }'
+</code></pre>
+<p>To get your JWT, sign into Pinata, then click on <a href="https://app.pinata.cloud/developers/api-keys">API Keys</a> in the left nav.</p>
+<p>Check job status</p>
+<pre><code class="language-bash">curl -s --request GET \
+  --url "https://api.pinata.cloud/pinning/pinJobs?ipfs_pin_hash=QmPWweP44kueHdDzJyEd6KTv6rqj2rrgHWSJNAjNsyFJey" \
+  --header "Authorization: Bearer &lt;YOUR_JWT&gt;"
+</code></pre>
+<p>Pin by CID, provide host nodes (if status is "searching" for a long time)</p>
+<pre><code class="language-bash"># get your node’s multiaddrs
+ipfs id | jq .Addresses
+
+# re-submit with hostNodes
+curl --request POST \
+  --url https://api.pinata.cloud/pinning/pinByHash \
+  --header "Authorization: Bearer &lt;YOUR_JWT&gt;" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "hashToPin": "QmPWweP44kueHdDzJyEd6KTv6rqj2rrgHWSJNAjNsyFJey",
+    "pinataOptions": {
+      "hostNodes": ["/ip4/…/tcp/4001/p2p/…", "/dns4/…/tcp/443/wss/p2p/…"]
+    }
+  }'
+</code></pre>
+<p>I got back <code>{"count":0,"rows":[]}</code> from <code>pinJobs</code> when it completed. The repository showed up in my Pinata dashboard.</p>
+
+      
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>SnapStack</strong> by the Massive Wiki Team.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/Massive-Wiki/SnapStack">SnapStack</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Tuesday, September 16, 2025 at 16:40 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

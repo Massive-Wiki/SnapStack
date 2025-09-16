@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapStack v0.9.1-2025-09-03-002 - SnapStack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//markpub-static/css/style.css">
+    <link rel="stylesheet" href="//markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="//lunr-index-1758040826.4055727.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="//lunr-posts-1758040826.4055727.js"></script>
+    <script> function randomPageLink() { return "/"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="//index.html">SnapStack</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="//README.html">HOME</a></li>
+<li><a href="//search.html">SEARCH</a></li>
+<li><a href="//all-pages.html">ALL PAGES</a></li>
+<li><a href="//recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/Massive-Wiki/SnapStack/edit/main/SnapStack v0.9.1-2025-09-03-002.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>SnapStack: Collaborative Writing with Immutable Snapshots</h1>
+<p>v0.9.1 - 2025-09-03-002</p>
+<p><em>A lightweight workflow for small teams to collaboratively maintain document collections using IPFS/IPNS</em></p>
+<p><em>This document is curated by me, Peter Kaminski, but written entirely by AI. It's not as explanatory as I'd like yet. It needs reorganizing and rewriting.</em></p>
+<h2>How It Works (The Simple Version)</h2>
+<p>Imagine you and your friends are writing a book together, but instead of emailing files back and forth, you use a magical filing system:</p>
+<ol>
+<li>
+<p><strong>Every version gets a special fingerprint</strong>: When you save your work, the computer creates a unique "fingerprint" for that exact version. If you change even one word, you get a completely different fingerprint.</p>
+</li>
+<li>
+<p><strong>There's always a "latest version" pointer</strong>: You have a special bookmark that always points to the newest approved version of your book. When someone makes improvements, you move the bookmark to point to the new fingerprint.</p>
+</li>
+<li>
+<p><strong>Everyone can keep copies</strong>: Your friends can make copies of any version they want and keep them safe on their computers. The more people who keep copies, the safer your work is.</p>
+</li>
+<li>
+<p><strong>No mysterious changes</strong>: Because of the fingerprints, you always know exactly what changed between versions and who made the changes.</p>
+</li>
+<li>
+<p><strong>Take turns, don't step on toes</strong>: Instead of everyone editing at once (which gets messy), you take turns making changes and then everyone agrees on the new "official" version.</p>
+</li>
+</ol>
+<p>That's SnapStack! It's like having a super-reliable, tamper-proof filing system for team writing projects.</p>
+<h2>Typical Use Case</h2>
+<p>SnapStack is designed for <strong>small collaborative writing projects</strong> with 2-5 contributors who don't expect frequent editing conflicts. Think technical documentation teams, research collaboratives, or small publishing projects where:</p>
+<ul>
+<li>Contributors can coordinate informally (chat, email, brief calls)</li>
+<li>Most edits are additive rather than heavily overlapping</li>
+<li>You value cryptographic integrity and decentralized distribution</li>
+<li>You prefer explicit coordination over automatic conflict resolution</li>
+</ul>
+<p>This isn't meant for large teams with constant concurrent edits - it's optimized for thoughtful, coordinated collaboration.</p>
+<h2>Core Concept</h2>
+<p>SnapStack treats collaborative writing as <strong>publishing signed snapshots</strong> rather than merging concurrent edits. Think "version control for documents" but with cryptographic integrity and decentralized distribution built in.</p>
+<h3>Key Principles</h3>
+<ul>
+<li><strong>Immutable snapshots</strong>: Every version gets a unique cryptographic identifier (CID)</li>
+<li><strong>One stable pointer</strong>: A single IPNS address always points to the latest accepted version</li>
+<li><strong>Conflict avoidance</strong>: Coordinate edits rather than merge them</li>
+<li><strong>Low ceremony</strong>: Simple roles and lightweight processes</li>
+</ul>
+<h2>How IPFS/IPNS Enables This</h2>
+<p><strong>IPFS</strong> gives you immutable snapshots. Every time you add a folder to IPFS, you get a CID (Content Identifier) that cryptographically matches those exact bytes. Change one file, get a completely new top-level CID.</p>
+<p><strong>IPNS</strong> provides a moving pointer. You publish your current snapshot under an IPNS name, then update that pointer when you have a new version. Collaborators fetch via your stable IPNS address.</p>
+<p><strong>Pinning</strong> controls persistence. Any peer can pin a CID to keep it available, and you can use remote pinning services for reliability.</p>
+<h2>Team Structure and Publishing Models</h2>
+<p>SnapStack supports two publishing models depending on your team's trust level and coordination preferences:</p>
+<h3>Model 1: Maintainer of Record (Centralized Publishing)</h3>
+<p>Best for teams with clear editorial hierarchy or when you want tight control over what gets published.</p>
+<p><strong>Roles:</strong></p>
+<ul>
+<li><strong>Maintainer of Record (MoR)</strong>: Owns the main IPNS key and publishes accepted releases</li>
+<li><strong>Contributors</strong>: Propose new snapshots for inclusion</li>
+<li><strong>Backup Maintainer</strong>: Holds an escrow copy of the main IPNS key</li>
+</ul>
+<p><strong>When to use:</strong> Mixed trust levels, public content with reputation concerns, or teams that prefer editorial review.</p>
+<h3>Model 2: Shared Key Publishing (Decentralized Publishing)</h3>
+<p>Best for small, high-trust teams working on public content where everyone can safely hold the publishing key.</p>
+<p><strong>Roles:</strong></p>
+<ul>
+<li><strong>All Contributors</strong>: Everyone can publish directly to the main IPNS name</li>
+<li><strong>Key Holders</strong>: All team members have the main IPNS key (with passphrases)</li>
+<li><strong>Coordinator</strong> (optional): Someone who handles key rotation if needed</li>
+</ul>
+<p><strong>When to use:</strong> High-trust teams, public content, fast iteration needs, or when editorial bottlenecks are a problem.</p>
+<p>Everyone can create personal IPNS keys to share work-in-progress or experimental versions in both models.</p>
+<h3>Repository Structure</h3>
+<pre><code>/ (root of the snapshot)
+  /docs/…                # markdown content
+  /assets/…              # images, diagrams
+  /scripts/…             # helper scripts
+  CONTRIBUTING.md        # workflow rules
+  STYLE.md               # formatting guidelines
+  CHANGELOG.md           # human-readable release notes
+  MANIFEST.json          # machine-readable metadata
+  LICENSE
+  README.md              # project overview and access info
+</code></pre>
+<p>The <strong>MANIFEST.json</strong> tracks the snapshot chain:</p>
+<pre><code class="language-json">{
+  "cid": "bafy…", 
+  "parent_cid": "bafy…",
+  "version": "2025-08-29-001",
+  "timestamp": "2025-08-29T16:45:00-07:00",
+  "author": "Alice &lt;alice@example.org&gt;",
+  "summary": "Fix typos in intro; add diagram alt text",
+  "files_changed": ["docs/03-intro.md", "assets/flow-1.png"]
+}
+</code></pre>
+<h2>Standard Workflow</h2>
+<h3>Model 1: Maintainer of Record Workflow</h3>
+<h4>Contributing Changes (Contributors)</h4>
+<ol>
+<li><strong>Sync to latest</strong>: Resolve the main IPNS name to get the current CID</li>
+<li><strong>Edit locally</strong>: Make focused changes following the style guide</li>
+<li><strong>Self-validate</strong>: Run quality checks (linting, spell-check, link validation)</li>
+<li><strong>Update metadata</strong>: Add entry to CHANGELOG.md and update MANIFEST.json</li>
+<li><strong>Create snapshot</strong>: Add your folder to IPFS to get a new CID</li>
+<li><strong>Propose changes</strong>: Share the CID with a summary of what changed</li>
+</ol>
+<h4>Publishing Releases (MoR)</h4>
+<ol>
+<li><strong>Fetch proposal</strong>: Get the contributor's CID and review the changes</li>
+<li><strong>Validate</strong>: Run the same quality checks independently</li>
+<li><strong>Editorial review</strong>: Spot-check changes and verify metadata is sensible</li>
+<li><strong>Publish</strong>: Update the main IPNS name to point to the new CID</li>
+<li><strong>Announce</strong>: Share the new version info and ask everyone to pin it</li>
+</ol>
+<h3>Model 2: Shared Key Publishing Workflow</h3>
+<p>When everyone holds the main IPNS key, the workflow becomes more streamlined but requires additional coordination mechanisms:</p>
+<h4>Safe Publishing (Any Contributor)</h4>
+<p>Use the <code>snapstack publish</code> command (or equivalent tooling) that prevents conflicts:</p>
+<ol>
+<li><strong>Prepare your changes</strong>: Follow steps 1-5 from the MoR model above</li>
+<li><strong>Run safe publish</strong>: The tool automatically handles conflict detection:
+<ul>
+<li>Resolves current main IPNS → <code>current_main_cid</code></li>
+<li>Verifies your <code>MANIFEST.parent_cid == current_main_cid</code></li>
+<li>If mismatch: aborts with "rebase to <code>&lt;current_main_cid&gt;</code>" message</li>
+<li>Uses IPNS sequence numbers to prevent race conditions</li>
+<li>Retries with backoff if conflicts detected</li>
+</ul>
+</li>
+<li><strong>Announce success</strong>: Tool outputs new CID and notifies team to pin</li>
+</ol>
+<h4>Conflict Prevention Mechanisms</h4>
+<p><strong>Optimistic concurrency control</strong>: Compare-and-set using IPNS sequence numbers prevents accidental rollbacks even when multiple people publish simultaneously.</p>
+<p><strong>Voluntary locking</strong>: CLI can announce publishing intent via:</p>
+<ul>
+<li>IPFS PubSub channel (<code>snapstack/publish</code>)</li>
+<li>Small "lock document" with intent metadata</li>
+<li>Tool refuses to proceed if active intent &lt;5 minutes old (unless <code>--force</code>)</li>
+</ul>
+<p><strong>Dual pointers</strong> (optional): Maintain <code>/ipns/main-next</code> and <code>/ipns/main</code> for staged publishing.</p>
+<h2>Conflict Management</h2>
+<p><strong>Prevention over resolution</strong>: Use soft coordination rather than complex merging.</p>
+<ul>
+<li>Announce in chat when editing specific files ("working on intro.md for the next hour")</li>
+<li>Keep edits small and focused to reduce overlap</li>
+<li>If changes collide, the version that gets published to main wins - others rebase on top</li>
+</ul>
+<p><strong>Rebasing process</strong>: Start from the new main CID, manually reapply your changes, create a fresh snapshot.</p>
+<h2>The Rebasing Process</h2>
+<p>When someone else's changes get published to main while you're working, you need to rebase your edits on top of the new version:</p>
+<ol>
+<li><strong>Save your work-in-progress CID</strong> for reference</li>
+<li><strong>Fetch the new main</strong> by resolving the IPNS address to get the latest CID</li>
+<li><strong>Download the new base</strong> and extract it to a clean working directory</li>
+<li><strong>Reapply your changes</strong> on top of this new base - this is manual work, but you can use merge tools to help</li>
+<li><strong>Create a fresh snapshot</strong> with the correct parent_cid pointing to the new main</li>
+<li><strong>Resubmit your proposal</strong> with the updated CID</li>
+</ol>
+<h3>Using Merge Tools for Rebasing</h3>
+<p>Some contributors find visual merge tools helpful for the reapplication step:</p>
+<ul>
+<li><strong>kdiff3</strong>: Three-way comparison showing original, new main, and your version</li>
+<li><strong>meld</strong>: Side-by-side diff with merge capabilities</li>
+<li><strong>diffuse</strong>: Lightweight option with good text handling</li>
+</ul>
+<p>Set up the comparison as: <code>[new main] [your original base] [your modified version]</code>, then manually apply your changes to the new main version.</p>
+<h2>Why Not Automatic 3-Way Merges?</h2>
+<p>SnapStack deliberately avoids automatic merging for several reasons:</p>
+<p><strong>Semantic conflicts</strong>: Merge algorithms can't understand when changes are semantically incompatible even if they don't textually conflict. Human judgment is essential for maintaining document coherence.</p>
+<p><strong>Accountability</strong>: Manual conflict resolution makes it clear who made each decision and why, creating better audit trails for collaborative documents.</p>
+<p><strong>Simplicity</strong>: No complex merge state, no "merge commits", no partially-merged working directories. Each snapshot is clean and complete.</p>
+<p><strong>Cryptographic integrity</strong>: Every CID represents a completely validated state that someone explicitly approved, rather than a potentially untested automatic merge result.</p>
+<p>The trade-off is requiring more coordination, but for small teams working on documents (rather than code), this explicit approach often produces better results.</p>
+<h2>Versioning and Quality</h2>
+<h3>Version Scheme</h3>
+<p>Use date-based versioning: <code>YYYY-MM-DD-NNN</code> (e.g., <code>2025-08-29-001</code>). Reset the counter each day. The MoR increments versions when publishing to main.</p>
+<h3>Quality Gates</h3>
+<p>Keep validation fast and local:</p>
+<ul>
+<li>Markdown linting for consistent formatting</li>
+<li>Spell-checking with project-specific allowlists</li>
+<li>Link validation for external references</li>
+<li>Optional builds (HTML/PDF generation) to catch asset issues</li>
+</ul>
+<h2>Pinning and Persistence</h2>
+<p><strong>Everyone pins the latest main CID</strong> to ensure reliable access. Use both personal nodes and shared remote pinning services for redundancy.</p>
+<p><strong>Retention policy</strong>: Keep the last 5 releases pinned by default. Older versions can be unpinned unless they're specifically referenced.</p>
+<h2>Security and Backup</h2>
+<h3>Key Management by Model</h3>
+<h4>Model 1 (MoR): Centralized Key Control</h4>
+<ul>
+<li>Main IPNS key stored offline by MoR with sealed backup copy</li>
+<li>Contributors use personal IPNS keys for proposals</li>
+<li>Key rotation requires MoR coordination</li>
+</ul>
+<h4>Model 2 (Shared): Distributed Key Management</h4>
+<ul>
+<li><strong>Key distribution</strong>: Store main IPNS key in each person's keystore (e.g., <code>ipfs key import</code>), protected by passphrases</li>
+<li><strong>Hardware tokens</strong>: Encourage hardware token usage when convenient; encrypted at rest is fine for public content</li>
+<li><strong>Key rotation when compromised</strong>:
+<ol>
+<li><strong>Freeze</strong>: Announce "main key compromised; stop publishing"</li>
+<li><strong>Create new key</strong>: <code>ipfs key gen main-v2</code></li>
+<li><strong>Republish</strong>: Publish current canonical CID under new key</li>
+<li><strong>Update pointers</strong>: Use DNSLink or catalog manifest to redirect to new IPNS name</li>
+<li><strong>Clean up</strong>: Optionally republish old IPNS to tombstone document pointing to new location</li>
+</ol>
+</li>
+</ul>
+<h3>Choosing Your Model</h3>
+<p><strong>Use MoR model when:</strong></p>
+<ul>
+<li>Mixed trust levels among contributors</li>
+<li>Content has reputation/legal implications</li>
+<li>You prefer editorial oversight</li>
+<li>Team comfortable with review bottlenecks</li>
+</ul>
+<p><strong>Use Shared Key model when:</strong></p>
+<ul>
+<li>High mutual trust (2-5 person teams)</li>
+<li>Public content with low reputation risk</li>
+<li>Fast iteration is important</li>
+<li>Editorial bottlenecks cause problems</li>
+<li>Comfortable with "burn and rotate" if key leaks</li>
+</ul>
+<h2>Optional SnapStack Hashchain</h2>
+<p>The basic SnapStack workflow already creates a hashchain through the <code>parent_cid</code> links in MANIFEST.json. For teams wanting stronger cryptographic guarantees, here are layered security enhancements:</p>
+<h3>Level 1: Signed Snapshots (Recommended Baseline)</h3>
+<p>Keep your existing MANIFEST.json with <code>cid</code>, <code>parent_cid</code>, <code>timestamp</code>, and <code>author</code> fields. Then cryptographically sign each manifest using:</p>
+<ul>
+<li><strong>ssh-keygen signatures</strong> (<code>ssh-keygen -Y sign</code>)</li>
+<li><strong>minisign/age</strong> for lightweight signing</li>
+<li><strong>GPG</strong> for traditional PGP workflows</li>
+</ul>
+<p>Publish the signed tree to IPFS and update IPNS as usual.</p>
+<p><strong>Why this is sufficient</strong>: Anyone can verify both the hashchain (via <code>parent_cid</code> links) and the signature on each step. This creates a tamper-evident audit trail without additional infrastructure.</p>
+<h3>Level 2: Public Timestamps (Cheap, No New Infrastructure)</h3>
+<p>Feed the CID (or manifest hash) into <strong>OpenTimestamps</strong> to anchor its existence time into Bitcoin's blockchain via Merkle aggregation. You get a small <code>.ots</code> proof file that anyone can later verify independently.</p>
+<p><strong>When to add this</strong>: You want provable "this snapshot existed no later than <code>&lt;date&gt;</code>" guarantees without running your own blockchain infrastructure.</p>
+<p><strong>How it works</strong>: OpenTimestamps aggregates many timestamp requests into Merkle trees, then commits the root hash to Bitcoin. Your <code>.ots</code> file contains the Merkle path proving your hash was included.</p>
+<h3>Suggested SnapStack Security Recipe</h3>
+<p>For teams wanting strong but practical security:</p>
+<ol>
+<li><strong>Keep the MANIFEST.json parent_cid chain</strong> (you're already doing this)</li>
+<li><strong>Sign each manifest</strong> with a team-wide key policy</li>
+<li><strong>OpenTimestamp the manifest's SHA-256</strong> and store the <code>.ots</code> file alongside it</li>
+<li><strong>(Optional)</strong> Post the tuple <code>{cid, manifest_hash, signature}</code> to <strong>Rekor</strong> for public transparency logging</li>
+</ol>
+<p>This gives you a cryptographically verifiable, publicly auditable document history using existing free services, with no custom infrastructure to maintain.</p>
+<h2>Communications and Expectations</h2>
+<h3>Announcing Changes</h3>
+<ul>
+<li><strong>Proposals</strong>: Share CID, brief summary, list of changed files</li>
+<li><strong>Releases</strong>: Include version number, CID, changelog excerpt, and pinning reminder</li>
+</ul>
+<h3>Performance Expectations</h3>
+<ul>
+<li><strong>IPNS updates</strong>: Take minutes, not seconds - share CIDs directly in chat for immediate access</li>
+<li><strong>Review window</strong>: Aim for 24-hour turnaround on proposal acceptance/rejection</li>
+</ul>
+<h2>Trade-offs to Consider</h2>
+<p><strong>Not real-time collaborative editing</strong>: This works best for teams that can coordinate who edits what, when. It's not Google Docs - it's more like a lightweight, decentralized version control system.</p>
+<p><strong>IPNS propagation delays</strong>: Updates aren't instant. For time-sensitive coordination, share CIDs directly while IPNS catches up.</p>
+<p><strong>Manual conflict resolution</strong>: No automatic merging - humans decide how to reconcile conflicting changes.</p>
+<h2>Getting Started</h2>
+<p>The minimal setup involves installing IPFS (Kubo), initializing your node, adding your document collection to get a CID, creating an IPNS key, and publishing that CID under the IPNS name. Contributors can then resolve your IPNS address to get the latest version and pin it locally.</p>
+<p>This approach gives you cryptographically verifiable document versioning with decentralized distribution, while keeping the human coordination simple and lightweight.</p>
+<h2>Appendix: Technical Background</h2>
+<h3>IPFS/IPNS Fundamentals</h3>
+<p>For those new to IPFS (InterPlanetary File System), here's what you need to understand:</p>
+<h4>Content Addressing (IPFS)</h4>
+<p>Unlike traditional file systems that use location-based addresses (like <code>/home/user/document.txt</code>), IPFS uses <strong>content addressing</strong>. Every file and folder gets a unique identifier called a <strong>CID</strong> (Content Identifier) that's derived from the actual bytes of the content.</p>
+<p><strong>Key properties:</strong></p>
+<ul>
+<li><strong>Immutable</strong>: The same content always produces the same CID</li>
+<li><strong>Verifiable</strong>: You can cryptographically verify that content matches its CID</li>
+<li><strong>Deduplication</strong>: Identical content shares the same CID across the network</li>
+<li><strong>Change detection</strong>: Modify even one byte and you get a completely different CID</li>
+</ul>
+<p>When you add a folder to IPFS, you get a CID for the entire folder structure. Change any file inside, and the folder gets a new CID (though unchanged files keep their original CIDs).</p>
+<h4>Mutable Pointers (IPNS)</h4>
+<p>Since CIDs change whenever content changes, you need a way to point to "the latest version" of something. That's what <strong>IPNS</strong> (InterPlanetary Name System) provides.</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>You create an IPNS name (which looks like a long string starting with <code>k51q...</code>)</li>
+<li>You can publish any CID to that IPNS name</li>
+<li>Others can resolve your IPNS name to get the current CID</li>
+<li>You can update the IPNS name to point to new CIDs as your content evolves</li>
+</ul>
+<p>Think of IPNS like a domain name that always points to your latest content, while CIDs are like specific snapshots.</p>
+<h4>Persistence and Pinning</h4>
+<p>IPFS is designed as a peer-to-peer network where content stays available as long as someone has it. <strong>Pinning</strong> is how you tell your IPFS node "keep this content available."</p>
+<p><strong>Without pinning:</strong> Content might disappear if no one else has it pinned
+<strong>With pinning:</strong> Your node keeps the content and serves it to others who request it</p>
+<p><strong>Pinning strategies:</strong></p>
+<ul>
+<li><strong>Local pinning</strong>: Your own IPFS node keeps the content</li>
+<li><strong>Remote pinning services</strong>: Third-party services (like Pinata or Web3.Storage) keep your content available</li>
+<li><strong>Collaborative pinning</strong>: Team members all pin the same important CIDs</li>
+</ul>
+<h4>Why This Matters for SnapStack</h4>
+<p>This foundation enables SnapStack's core benefits:</p>
+<p><strong>Immutable snapshots</strong>: Each version gets a permanent, verifiable CID that can never change
+<strong>Stable sharing</strong>: The IPNS address stays the same even as content evolves<br />
+<strong>Decentralized</strong>: No single server controls your content - it's distributed across participating nodes
+<strong>Cryptographic integrity</strong>: You can always verify that content hasn't been tampered with</p>
+<h3>Glossary</h3>
+<p><strong>CID (Content Identifier)</strong>: A unique cryptographic fingerprint for any piece of content. Same content = same CID, different content = different CID.</p>
+<p><strong>Compare-and-Set (CAS)</strong>: A technique that ensures updates only succeed if the base state hasn't changed since you started working.</p>
+<p><strong>Contributor</strong>: A team member who proposes changes by creating new snapshots and sharing their CIDs.</p>
+<p><strong>DNSLink</strong>: A way to point a regular domain name (like <code>docs.example.com</code>) to an IPNS address, making content accessible via familiar URLs.</p>
+<p><strong>Hashchain</strong>: A sequence of linked snapshots where each one references its predecessor, creating a tamper-evident history.</p>
+<p><strong>IPFS (InterPlanetary File System)</strong>: A distributed system for storing and sharing content using cryptographic addresses instead of server locations.</p>
+<p><strong>IPNS (InterPlanetary Name System)</strong>: A way to create stable, updateable pointers to IPFS content that changes over time.</p>
+<p><strong>IPNS Sequence Number</strong>: A counter that increments with each IPNS update, used to prevent race conditions when multiple publishers update simultaneously.</p>
+<p><strong>Maintainer of Record (MoR)</strong>: The team member who controls the main IPNS key and publishes accepted versions in the centralized publishing model.</p>
+<p><strong>MANIFEST.json</strong>: A metadata file in each snapshot containing version info, authorship, change summary, and parent snapshot reference.</p>
+<p><strong>Optimistic Concurrency Control</strong>: A conflict prevention strategy that assumes conflicts are rare and handles them when they occur, rather than preventing them upfront.</p>
+<p><strong>Pinning</strong>: The process of telling an IPFS node to keep specific content available and serve it to others who request it.</p>
+<p><strong>PubSub</strong>: A messaging system where publishers send messages to topics and subscribers receive them, used for coordination in distributed systems.</p>
+<p><strong>Rebasing</strong>: Manually reapplying your changes on top of a newer version when someone else's work got published first.</p>
+<p><strong>Snapshot</strong>: A complete, immutable version of the document collection, identified by its CID.</p>
+<p><strong>Tombstone Document</strong>: A special document published to an old address that redirects users to a new location after key rotation.</p>
+
+      
+      <hr>
+      <div>
+	<h4>Pages that link to this page</h4>
+	<ul>
+	  
+	  <li><a href="//README.html">README</a>
+	  
+	</ul>
+      </div>
+      
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>SnapStack</strong> by the Massive Wiki Team.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/Massive-Wiki/SnapStack">SnapStack</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Tuesday, September 16, 2025 at 16:40 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>
