@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Emacs
+*~
+\#*\#
+
+# Obsidian.md
+.obsidian/*
+
+# MarkPub
+.markpub/output/*
+
