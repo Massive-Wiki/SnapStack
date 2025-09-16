@@ -6,7 +6,7 @@ A lightweight workflow for small teams to collaboratively maintain document coll
 
 The current work is evolving, and the documents herein might look finished, but they are not. There will be conflicts inter-doc, and maybe even intra-doc.
 
-See the **blogs** folder for running commentary.
+See the [blogs](/blogs) folder for running commentary.
 
 ## Documents
 
