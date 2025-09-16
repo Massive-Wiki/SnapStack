@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 # status.sh — check Pinata pin status for a CID
+#
 # Usage:
-#   ./status.sh pinata [--watch] [--interval <secs>] [--jwt-file <path>] [--json] <CID>
-#   ./status.sh help
+#   bin/status.sh pinata [--watch] [--interval <secs>] [--jwt-file <path>] [--json] <CID>
+#   bin/status.sh help
 #
 # Status values (from Pinata):
 #   prechecking, retrieving, expired, over_free_limit, over_max_size,
 #   invalid_object, bad_host_node, backfilled
 #
 # Notes:
-# - "0 rows" means Pinata hasn't recorded a status for that CID yet.
-# - In --watch mode, we poll until status leaves {prechecking,retrieving}
-#   or until the record disappears (0 rows).
+#   - "0 rows" means Pinata hasn't recorded a status for that CID yet.
+#   - In --watch mode, we poll until status leaves {prechecking,retrieving}
+#     or until the record disappears (0 rows).
 
 set -euo pipefail
 
@@ -21,8 +22,8 @@ DEFAULT_JWT_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/pinata/jwt"
 usage() {
   cat <<EOF
 Usage:
-  ./status.sh pinata [--watch] [--interval <secs>] [--jwt-file <path>] [--json] <CID>
-  ./status.sh help
+  bin/status.sh pinata [--watch] [--interval <secs>] [--jwt-file <path>] [--json] <CID>
+  bin/status.sh help
 
 Options:
   --watch             Poll until status is no longer "prechecking" or "retrieving", or until no rows exist.
@@ -32,17 +33,12 @@ Options:
 
 Env:
   PINATA_JWT          If set, overrides JWT file.
-
-Examples:
-  ./status.sh pinata Qm...
-  ./status.sh pinata --watch --interval 3 Qm...
-  ./status.sh pinata --json Qm...
 EOF
 }
 
 short_help() {
   echo "Error: $1" >&2
-  echo "Try: ./status.sh help" >&2
+  echo "Try: bin/status.sh help" >&2
   exit 1
 }
 
@@ -65,21 +61,17 @@ raw_json="false"
 # Parse options
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --watch)
-      watch="true"; shift ;;
+    --watch) watch="true"; shift ;;
     --interval)
       [[ $# -ge 2 ]] || short_help "--interval requires a number"
       interval="$2"; shift 2 ;;
     --jwt-file)
       [[ $# -ge 2 ]] || short_help "--jwt-file requires a path"
       jwt_file="$2"; shift 2 ;;
-    --json)
-      raw_json="true"; shift ;;
+    --json) raw_json="true"; shift ;;
     --) shift; break ;;
-    -*)
-      short_help "unknown option '$1'" ;;
-    *)
-      break ;;
+    -*) short_help "unknown option '$1'" ;;
+    *) break ;;
   esac
 done
 
@@ -115,14 +107,13 @@ print_summary() {
     return 0
   fi
 
-  # Safely pull first row fields (some may be null/missing)
-  local status created updated regionStr id name
+  local status created updated id name regions
   status="$(jq -r '.rows[0].status // "unknown"' <<<"$json")"
   created="$(jq -r '.rows[0].created_at // .rows[0].date_pinned // "unknown"' <<<"$json")"
   updated="$(jq -r '.rows[0].updated_at // .rows[0].date_unpinned // "unknown"' <<<"$json")"
   id="$(jq -r '.rows[0].id // "unknown"' <<<"$json")"
   name="$(jq -r '.rows[0].name // empty' <<<"$json")"
-  regionStr="$(jq -r '(.rows[0].regions // .rows[0].region // []) | (if type=="array" then join(",") else tostring end // "")' <<<"$json")"
+  regions="$(jq -r '(.rows[0].regions // .rows[0].region // []) | (if type=="array" then join(",") else tostring end // "")' <<<"$json")"
 
   echo "cid: ${CID}"
   echo "status: ${status}"
@@ -130,17 +121,12 @@ print_summary() {
   echo "id: ${id}"
   echo "created_at: ${created}"
   echo "updated_at: ${updated}"
-  [[ -n "$regionStr" ]] && echo "regions: ${regionStr}"
+  [[ -n "$regions" ]] && echo "regions: ${regions}"
 }
 
 should_continue() {
-  # Continue polling only while status is transitional
-  # Transitional statuses we know about: prechecking, retrieving
   local status="$1"
-  if [[ "$status" == "prechecking" || "$status" == "retrieving" ]]; then
-    return 0
-  fi
-  return 1
+  [[ "$status" == "prechecking" || "$status" == "retrieving" ]]
 }
 
 if [[ "$watch" == "false" ]]; then
@@ -164,21 +150,11 @@ while true; do
   if [[ "$raw_json" == "true" ]]; then
     echo "$resp"
   else
-    # Clear previous summary line(s) for a cleaner watch; fall back if tput unavailable
-    if command -v tput >/dev/null 2>&1; then
-      lines=8
-      tput sc
-      print_summary "$resp"
-      tput rc
-      tput el
-    else
-      print_summary "$resp"
-    fi
+    print_summary "$resp"
   fi
 
   count="$(jq -r '.count // 0' <<<"$resp")"
   if [[ "$count" -eq 0 ]]; then
-    # No record yet — keep watching
     sleep "$interval"
     continue
   fi
@@ -187,10 +163,7 @@ while true; do
   if should_continue "$status_val"; then
     sleep "$interval"
   else
-    # Reprint final state nicely and exit
-    if [[ "$raw_json" == "false" ]]; then
-      print_summary "$resp"
-    fi
+    [[ "$raw_json" == "false" ]] && print_summary "$resp"
     exit 0
   fi
 done
