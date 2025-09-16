@@ -1,8 +1,12 @@
 # SnapStack
 
-A lightweight workflow for small teams to collaboratively maintain document collections using IPFS.
+⚠️ PRE-RELEASE
+
+A lightweight workflow for small teams to collaboratively maintain document collections ("folios") using IPFS.
 
 The current work is evolving, and the documents herein might look finished, but they are not. There will be conflicts inter-doc, and maybe even intra-doc.
+
+See the **blogs** folder for running commentary.
 
 ## Documents
 
