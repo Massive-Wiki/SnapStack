@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net" modified="2025-10-03T18:25:00.000Z" agent="SnapStack drawio" version="24.7.1">
+  <diagram id="snapstack-sharing" name="SnapStack Sharing Flow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Swimlanes / Context -->
+        <mxCell id="laneLocal" value="Your Computer" style="swimlane;horizontal=0;rounded=1;strokeColor=#666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="380" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="laneCloud" value="IPFS Cloud" style="swimlane;horizontal=0;rounded=1;strokeColor=#666;" vertex="1" parent="1">
+          <mxGeometry x="460" y="60" width="420" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="laneFriend" value="Friend" style="swimlane;horizontal=0;rounded=1;strokeColor=#666;" vertex="1" parent="1">
+          <mxGeometry x="910" y="60" width="360" height="520" as="geometry"/>
+        </mxCell>
+
+        <!-- Local side -->
+        <mxCell id="folio" value="Folio Directory (files/subfolders)" style="rounded=1;whiteSpace=wrap;strokeColor=#1565C0;fillColor=#E3F2FD;" vertex="1" parent="laneLocal">
+          <mxGeometry x="40" y="50" width="300" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="ipfsNode" value="Local IPFS Node (daemon running)" style="rounded=1;whiteSpace=wrap;strokeColor=#1565C0;fillColor=#E3F2FD;" vertex="1" parent="laneLocal">
+          <mxGeometry x="40" y="150" width="300" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="ipfsAdd" value="ipfs add → returns CID" style="rounded=1;whiteSpace=wrap;strokeColor=#1B5E20;fillColor=#E8F5E9;" vertex="1" parent="laneLocal">
+          <mxGeometry x="40" y="240" width="300" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="shareCID" value="Share CID" style="shape=note;whiteSpace=wrap;strokeColor=#6A1B9A;fillColor=#F3E5F5;" vertex="1" parent="laneLocal">
+          <mxGeometry x="40" y="320" width="300" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Cloud / network -->
+        <mxCell id="ipfsNetwork" value="IPFS Network (providers/DHT)" style="rounded=1;whiteSpace=wrap;strokeColor=#424242;fillColor=#FAFAFA;dashed=1;" vertex="1" parent="laneCloud">
+          <mxGeometry x="40" y="50" width="340" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="pinService" value="Pinning Service (e.g., Pinata)&#10;• Pin by CID (API/CLI)&#10;• Stores and advertises your folio&#10;• Keeps it online" style="rounded=1;whiteSpace=wrap;strokeColor=#BF360C;fillColor=#FBE9E7;" vertex="1" parent="laneCloud">
+          <mxGeometry x="40" y="150" width="340" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="gateways" value="Public Gateways (ipfs.io, dweb.link)&#10;https://&lt;gateway&gt;/ipfs/&lt;CID&gt;" style="rounded=1;whiteSpace=wrap;strokeColor=#004D40;fillColor=#E0F2F1;" vertex="1" parent="laneCloud">
+          <mxGeometry x="40" y="290" width="340" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="altUpload" value="Alternate path:&#10;Upload folio directly to pinning service&#10;(service gives you a CID)" style="rounded=1;whiteSpace=wrap;strokeColor=#BF360C;fillColor=#FFF3E0;dashed=1;" vertex="1" parent="laneCloud">
+          <mxGeometry x="40" y="400" width="340" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Friend side -->
+        <mxCell id="friendBrowser" value="Friend uses a Gateway URL&#10;(no IPFS install needed)" style="rounded=1;whiteSpace=wrap;strokeColor=#004D40;fillColor=#E0F2F1;" vertex="1" parent="laneFriend">
+          <mxGeometry x="20" y="80" width="320" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="friendIPFS" value="(Optional) Friend’s IPFS Node&#10;ipfs get &lt;CID&gt; to download directory" style="rounded=1;whiteSpace=wrap;strokeColor=#1565C0;fillColor=#E3F2FD;" vertex="1" parent="laneFriend">
+          <mxGeometry x="20" y="200" width="320" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows: main quickstart path -->
+        <mxCell id="a1" edge="1" parent="laneLocal" source="folio" target="ipfsNode" style="endArrow=classic;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="laneLocal" source="ipfsNode" target="ipfsAdd" style="endArrow=classic;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="ipfsAdd" target="pinService" style="endArrow=classic;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a5" value="Announces providers" edge="1" parent="laneCloud" source="pinService" target="ipfsNetwork" style="endArrow=classic;dashed=1;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a6" value="Fetch via CID" edge="1" parent="laneCloud" source="ipfsNetwork" target="gateways" style="endArrow=classic;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a7" value="https://gateway/ipfs/&lt;CID&gt;" edge="1" parent="1" source="gateways" target="friendBrowser" style="endArrow=classic;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a8" value="Share CID" edge="1" parent="1" source="shareCID" target="friendIPFS" style="endArrow=classic;dashed=1;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows: alternate direct-upload path -->
+        <mxCell id="alt1" value="Direct upload (service assigns CID)" edge="1" parent="1" source="folio" target="altUpload" style="endArrow=classic;dashed=1;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="alt2" edge="1" parent="laneCloud" source="altUpload" target="gateways" style="endArrow=classic;dashed=1;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Callouts -->
+        <mxCell id="note1" value="Once pinned, folio stays available even if your computer is offline" style="shape=note;whiteSpace=wrap;strokeColor=#BF360C;fillColor=#FFF3E0;" vertex="1" parent="laneCloud">
+          <mxGeometry x="40" y="260" width="340" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="note2" value="(Future) IPNS will give a persistent name across versions" style="shape=note;whiteSpace=wrap;strokeColor=#6A1B9A;fillColor=#F3E5F5;" vertex="1" parent="laneCloud">
+          <mxGeometry x="40" y="390" width="340" height="30" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
