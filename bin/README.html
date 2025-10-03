@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapStack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//markpub-static/css/style.css">
+    <link rel="stylesheet" href="//markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="//lunr-index-1759517368.999475.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="//lunr-posts-1759517368.999475.js"></script>
+    <script> function randomPageLink() { return "/"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="//index.html">SnapStack</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="//bin/README.html">HOME</a></li>
+<li><a href="//search.html">SEARCH</a></li>
+<li><a href="//all-pages.html">ALL PAGES</a></li>
+<li><a href="//recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <h1>IPFS + Pinata Helper Scripts</h1>
+<p>This folio includes three Bash helper scripts for working with <a href="https://ipfs.tech">IPFS</a> and <a href="https://www.pinata.cloud">Pinata</a>:</p>
+<ul>
+<li><code>bin/add.sh</code> — add a directory to IPFS with ignore rules.</li>
+<li><code>bin/pin.sh</code> — pin an existing CID to Pinata.</li>
+<li><code>bin/status.sh</code> — check the pin status of a CID on Pinata.</li>
+</ul>
+<p>Each script uses a consistent style:</p>
+<ul>
+<li><code>--help</code> shows usage.</li>
+<li>Defaults are sensible, but you can override with flags.</li>
+<li>Pinata JWT is read from either the environment variable <code>PINATA_JWT</code> or a file (default: <code>~/.config/pinata/jwt</code>).</li>
+</ul>
+<hr />
+<h2>Quick Usage</h2>
+<pre><code class="language-bash"># Add current folio to IPFS, respecting .gitignore
+bin/add.sh
+
+# Pin a CID to Pinata
+bin/pin.sh pin pinata QmYourCID
+
+# Check status of a Pinata pin
+bin/status.sh pinata QmYourCID
+</code></pre>
+<hr />
+<h2>JWT Setup</h2>
+<p>All Pinata commands require a JWT. You can provide it in two ways:</p>
+<ol>
+<li>
+<p><strong>Environment variable</strong>:</p>
+<pre><code class="language-bash">export PINATA_JWT='eyJ...'
+</code></pre>
+</li>
+<li>
+<p><strong>JWT file</strong> (default: <code>~/.config/pinata/jwt</code>):</p>
+<pre><code class="language-bash">mkdir -p ~/.config/pinata
+echo 'eyJ...' &gt; ~/.config/pinata/jwt
+chmod 600 ~/.config/pinata/jwt
+</code></pre>
+</li>
+</ol>
+<p>You can override the file location with <code>--jwt-file &lt;path&gt;</code>.</p>
+<hr />
+<h2><code>bin/add.sh</code></h2>
+<p>Add the current directory (or a given target) to IPFS with sensible defaults.</p>
+<h3>Summary</h3>
+<ul>
+<li>
+<p>Default command is equivalent to:</p>
+<pre><code class="language-bash">ipfs add --ignore-rules-path .gitignore -Qr .
+</code></pre>
+</li>
+<li>
+<p>Supports JSON output for scripting.</p>
+</li>
+<li>
+<p>Useful when your folio root already has a <code>.gitignore</code>.</p>
+</li>
+</ul>
+<h3>Usage</h3>
+<pre><code class="language-bash">bin/add.sh [--ignore-file &lt;path&gt;] [--quiet|--no-quiet]
+           [--recursive|--no-recursive] [--wrap|--no-wrap]
+           [--json|--json-all] [&lt;dir&gt;]
+bin/add.sh help
+</code></pre>
+<h3>Options</h3>
+<ul>
+<li><code>--ignore-file &lt;path&gt;</code>: Ignore file (default <code>.gitignore</code>).</li>
+<li><code>--quiet / --no-quiet</code>: Minimal output (default: quiet).</li>
+<li><code>--recursive / --no-recursive</code>: Add recursively (default: recursive).</li>
+<li><code>--wrap / --no-wrap</code>: Wrap with a directory node (default: no wrap).</li>
+<li><code>--json</code>: Emit a JSON object with the root CID.</li>
+<li><code>--json-all</code>: Emit a JSON array of all added entries (<code>cid</code>, <code>path</code>) — requires <code>jq</code>.</li>
+</ul>
+<h3>Examples</h3>
+<pre><code class="language-bash"># Default add (quiet, recursive, ignore .gitignore)
+bin/add.sh
+
+# Return just root CID as JSON
+bin/add.sh --json
+
+# Return all entries as JSON array
+bin/add.sh --json-all
+
+# Wrap with directory node, custom ignore file
+bin/add.sh --ignore-file .ipfsignore --wrap .
+</code></pre>
+<hr />
+<h2><code>bin/pin.sh</code></h2>
+<p>Pin an existing CID to <a href="https://www.pinata.cloud">Pinata</a>.</p>
+<h3>Summary</h3>
+<ul>
+<li>Wraps the Pinata <code>pinByHash</code> API.</li>
+<li>Reads JWT from <code>$PINATA_JWT</code> or <code>~/.config/pinata/jwt</code>.</li>
+<li>Can supply host nodes manually or via <code>ipfs id</code>.</li>
+</ul>
+<h3>Usage</h3>
+<pre><code class="language-bash">bin/pin.sh pin pinata [--addrs-from-ipfs] [--host-node &lt;multiaddr&gt;]...
+                     [--jwt-file &lt;path&gt;] &lt;CID&gt;
+bin/pin.sh help
+</code></pre>
+<h3>Options</h3>
+<ul>
+<li><code>--addrs-from-ipfs</code>: Use addresses from <code>ipfs id</code> (requires <code>jq</code>).</li>
+<li><code>--host-node &lt;addr&gt;</code>: Add specific host node (repeatable).</li>
+<li><code>--jwt-file &lt;path&gt;</code>: Path to JWT file (default <code>~/.config/pinata/jwt</code>).</li>
+</ul>
+<h3>Examples</h3>
+<pre><code class="language-bash"># Pin a CID with default JWT
+bin/pin.sh pin pinata QmYourCID
+
+# Pin with host nodes from your own IPFS daemon
+bin/pin.sh pin pinata --addrs-from-ipfs QmYourCID
+
+# Pin with custom host nodes
+bin/pin.sh pin pinata \
+  --host-node /ip4/203.0.113.9/tcp/4001/p2p/PeerID \
+  --host-node /dns4/gateway.example/tcp/443/wss/p2p/PeerID \
+  QmYourCID
+</code></pre>
+<hr />
+<h2><code>bin/status.sh</code></h2>
+<p>Check the status of a CID pinned to Pinata.</p>
+<h3>Summary</h3>
+<ul>
+<li>Wraps the Pinata <code>v3/files/public/pin_by_cid</code> endpoint.</li>
+<li>Shows known statuses:
+<code>prechecking</code>, <code>retrieving</code>, <code>expired</code>, <code>over_free_limit</code>, <code>over_max_size</code>,
+<code>invalid_object</code>, <code>bad_host_node</code>, <code>backfilled</code>.</li>
+<li>Can run once or in <code>--watch</code> mode.</li>
+</ul>
+<h3>Usage</h3>
+<pre><code class="language-bash">bin/status.sh pinata [--watch] [--interval &lt;secs&gt;]
+                    [--jwt-file &lt;path&gt;] [--json] &lt;CID&gt;
+bin/status.sh help
+</code></pre>
+<h3>Options</h3>
+<ul>
+<li><code>--watch</code>: Poll until status is no longer transitional.</li>
+<li><code>--interval &lt;secs&gt;</code>: Poll interval (default 5s).</li>
+<li><code>--jwt-file &lt;path&gt;</code>: Path to JWT file (default <code>~/.config/pinata/jwt</code>).</li>
+<li><code>--json</code>: Print raw JSON response instead of a summary.</li>
+</ul>
+<h3>Examples</h3>
+<pre><code class="language-bash"># Check status once
+bin/status.sh pinata QmYourCID
+
+# Watch until complete
+bin/status.sh pinata --watch --interval 3 QmYourCID
+
+# Print raw JSON
+bin/status.sh pinata --json QmYourCID
+</code></pre>
+<hr />
+
+      
+    </div>
+  </div>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>SnapStack</strong> by the Massive Wiki Team.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/Massive-Wiki/SnapStack">SnapStack</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Friday, October 03, 2025 at 18:49 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

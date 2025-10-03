@@ -1,6 +1,11 @@
 # CID Stack
-For this repository. Most recent first.
 
+For this folio. Most recent first.
+
+- Qmdmv1819p7Z31pVHf2UUomMSELoGZ1NefiWBBGHGzDT5q
+- QmcFZZynkz7KdCPdyRQJZRBbfRyEjXAHSqEyKHdX73az4z
+- QmeQ7x5YwxTWmh6Qx37YdcXtTiBMxFiSkErsDtk9Uvb9FN
+- QmUWzqaoEJxnPx1eUkETTbWtzCfsfkemHX9rLhJfQV4shf
 - QmPTVPawgBUFGBXLQxXtWaiwJSFU3AVcUY4JuyZWii51NA
 - QmUL4qhBtnRKfTb3Rm4QNN3bQ9dC6DfheePV9791SYo9sZ
 - Qmf7EYb5PkrMmbtfaoegKrREgAbKjJbDQJmM4f1ppiN3HU

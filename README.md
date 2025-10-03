@@ -8,6 +8,8 @@ The current work is evolving, and the documents herein might look finished, but 
 
 See the [[blogs]] folder for running commentary.
 
+We haven't automated yet, so this may be incomplete, but here is the [[CID Stack]] for this folio.
+
 ## Documents
 
 - [[SnapStack v0.9.1-2025-09-03-002]] - most recent combined version
