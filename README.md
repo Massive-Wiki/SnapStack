@@ -18,3 +18,7 @@ We haven't automated yet, so this may be incomplete, but here is the [[CID Stack
 ## Older Documents
 
 - [[SnapStack v0.8.0-2025-08-29]]
+
+## Folio Sharing IPFS Conceptual Diagram
+
+- [[Folio Sharing IPFS Conceptual Diagram]]
