@@ -1,7 +1,7 @@
 ### Site Navigation
 
 {< div class="navlinks" >}
-- [[/|HOME]]
+- [HOME](/)
 - [SEARCH](/search.html)  
 - [ALL PAGES](/all-pages.html)  
 - [RECENT CHANGES](/recent-pages.html)
