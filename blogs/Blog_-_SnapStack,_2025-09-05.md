@@ -25,7 +25,7 @@ need a better name than "repo" or "vault"
 
 For Pre-SnapStack, we won't use IPNS, so we'll just announce our new CID.
 
-Later, instead of "announce my new CID", it'll be "set the IPNS name to the new CID" and announce that there's a new version of the canonical wiki.
+Later, instead of "announce my new CID", it'll be "set the [[IPNS name]] to the new CID" and announce that there's a new version of the canonical wiki.
 
 ### Push / Add Wiki
 

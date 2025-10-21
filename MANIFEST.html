@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blogs - SnapStack</title>
+    <title>MANIFEST - SnapStack</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -54,29 +54,51 @@
       
       <div> <!-- edit this page button -->
 	<p style="float:right; margin:.5em .5em
-	.5em"><a target="_blank" href="https://github.com/Massive-Wiki/SnapStack/edit/main/blogs/blogs.md"
+	.5em"><a target="_blank" href="https://github.com/Massive-Wiki/SnapStack/edit/main/MANIFEST.md"
 	class="edit-this-page-button">Edit on GitHub</a></p>
 	<br clear="all">
       </div> <!-- edit this page button -->
       
-      <h1>Blog Posts</h1>
+      <h1>MANIFEST</h1>
+<p>This is a crude prototype of the <code>MANIFEST.json</code> file that was represented in the early SnapStack specifications. It uses Markdown syntax rather than JSON, to be easier for humans to maintain.</p>
+<p>After the manifest concepts are proven, we look forward to automating the manifest generation and deciding whether to use Markdown (more human-friendly) or JSON (more certainty around parsing).</p>
+<p>Note in the early SnapStack docs, <code>cid</code> was specified as the first field. Obviously that's not practical, because when generating a CID it's nearly impossible to include the CID as part of the content to hash. Let's try replacing the <code>cid</code> field with a randomly generated UUID, as shown below.</p>
+<p>(Geeky note: It <em>would</em> be possible to specify a random CID and then twiddle some additional bits to "mine," bitcoin-style, a set of bits that would make the CID work out, but it would take a lot of compute to do that.)</p>
+<p>Tips:</p>
 <ul>
-<li><a class="wikilink" href="//blogs/IPFS_with_Bill_and_Pete,_2025-10-03.html">IPFS with Bill and Pete, 2025-10-03</a></li>
-<li><a class="wikilink" href="//blogs/IPFS_with_Bill_and_Pete,_2025-09-16.html">IPFS with Bill and Pete, 2025-09-16</a></li>
-<li><a class="wikilink" href="//blogs/Blog_-_Peter_Kaminski,_2025-09-03.html">Blog - Peter Kaminski, 2025-09-03</a></li>
-<li><a class="wikilink" href="//blogs/Blog_-_SnapStack,_2025-09-05.html">Blog - SnapStack, 2025-09-05</a></li>
+<li>to get ISO 8601 date on a Mac (local timezone)
+<ul>
+<li><code>date +"%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([+-][0-9]{2})([0-9]{2})$/\1:\2/'</code></li>
+</ul>
+</li>
+<li>one source for v4 (random) UUIDs: <a href="https://www.browserling.com/tools/random-uuid">https://www.browserling.com/tools/random-uuid</a></li>
+</ul>
+<p>Content below should be updated whenever we're about to publish and obtain a new CID. It's currently updated by hand, please be tolerant of human errors, e.g., <code>parent_cid</code> may be wrong.</p>
+<h2>Manifest</h2>
+<ul>
+<li><strong>uuid</strong>: 1f346843-650b-4d92-a958-55343d76e772</li>
+<li><strong>parent_cid</strong>: QmRNPyD9xaUPhiSERnmSEvfEMGyzqhWs4E5VBGcB5kHD9W</li>
+<li><strong>version</strong>: 2025-10-21-001</li>
+<li><strong>timestamp</strong>: 2025-10-21T16:05:15-07:00</li>
+<li><strong>author</strong>: Peter Kaminski <a href="mailto:kaminski@istori.com">kaminski@istori.com</a></li>
+<li><strong>summary</strong>: Fix version format in main spec; add/linkify "IPNS name" and "Persistent Folio Name"; add "MANIFEST"</li>
+<li><strong>files_changed</strong>:
+<ul>
+<li>SnapStack - Collaborative Writing, Stacked as Immutable Snapshots.md</li>
+<li>SnapStack v0.8.0-2025-08-29.md</li>
+<li>SnapStack v0.9.1-2025-09-03-002.md</li>
+<li>blogs/Blog - SnapStack, 2025-09-05.md</li>
+</ul>
+</li>
+<li><strong>files_added</strong>:
+<ul>
+<li>IPNS name.md</li>
+<li>MANIFEST.md</li>
+<li>Persistent Folio Name.md</li>
+</ul>
+</li>
 </ul>
 
-      
-      <hr>
-      <div>
-	<h4>Pages that link to this page</h4>
-	<ul>
-	  
-	  <li><a href="//bin/README.html">README</a>
-	  
-	</ul>
-      </div>
       
     </div>
   </div>
