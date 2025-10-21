@@ -112,8 +112,9 @@ love this direction. here’s a lightweight, low-drama set of “how we work” 
 
 ```json
 {
-  "cid": "bafy…", "parent_cid": "bafy…",
-  "version": "2025.08.29-1",
+  "cid": "bafy…",
+  "parent_cid": "bafy…",
+  "version": "2025-08-29-001",
   "timestamp": "2025-08-29T16:45:00-07:00",
   "author": "Alice <alice@example.org>",
   "summary": "Fix typos in 03-intro.md; add diagram alt text; linkcheck clean",
@@ -125,7 +126,7 @@ love this direction. here’s a lightweight, low-drama set of “how we work” 
 
 ## 3) Versioning
 
-* **Date-based + counter:** `YYYY.MM.DD-N` (e.g., `2025.08.29-1`). Reset `-N` each day.
+* **Date-based + counter:** `YYYY-MM-DD-NNN` (e.g., `2025-08-29-001`). Reset `-NNN` each day.
 * **SemVer is fine** if you think in features; for documents, date-based keeps it simple.
 * The **MoR** increments version on publish to *main*.
 
@@ -316,8 +317,6 @@ echo "✓ pinned $CID"
 * [ ] Announce + pin policy enforced
 
 ---
-
-if you want, I can drop these files (`CONTRIBUTING.md`, `STYLE.md`, the two scripts, and a starter `MANIFEST.json`/`CHANGELOG.md`) into a ready-to-use skeleton you can `ipfs add -r` right away.
 
 # Optional SnapStack Hashchain
 
