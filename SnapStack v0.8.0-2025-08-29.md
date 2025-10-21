@@ -44,7 +44,7 @@ SnapStack treats collaborative writing as **publishing signed snapshots** rather
 
 **IPFS** gives you immutable snapshots. Every time you add a folder to IPFS, you get a CID (Content Identifier) that cryptographically matches those exact bytes. Change one file, get a completely new top-level CID.
 
-**IPNS** provides a moving pointer. You publish your current snapshot under an IPNS name, then update that pointer when you have a new version. Collaborators fetch via your stable IPNS address.
+**IPNS** provides a moving pointer. You publish your current snapshot under an [[IPNS name]], then update that pointer when you have a new version. Collaborators fetch via your stable IPNS address.
 
 **Pinning** controls persistence. Any peer can pin a CID to keep it available, and you can use remote pinning services for reliability.
 
@@ -91,7 +91,7 @@ The **MANIFEST.json** tracks the snapshot chain:
 
 ### Contributing Changes (Contributors)
 
-1. **Sync to latest**: Resolve the main IPNS name to get the current CID
+1. **Sync to latest**: Resolve the main [[IPNS name]] to get the current CID
 2. **Edit locally**: Make focused changes following the style guide
 3. **Self-validate**: Run quality checks (linting, spell-check, link validation)
 4. **Update metadata**: Add entry to CHANGELOG.md and update MANIFEST.json
@@ -103,7 +103,7 @@ The **MANIFEST.json** tracks the snapshot chain:
 1. **Fetch proposal**: Get the contributor's CID and review the changes
 2. **Validate**: Run the same quality checks independently
 3. **Editorial review**: Spot-check changes and verify metadata is sensible
-4. **Publish**: Update the main IPNS name to point to the new CID
+4. **Publish**: Update the main [[IPNS name]] to point to the new CID
 5. **Announce**: Share the new version info and ask everyone to pin it
 
 ## Conflict Management
@@ -236,7 +236,7 @@ This gives you a cryptographically verifiable, publicly auditable document histo
 
 ## Getting Started
 
-The minimal setup involves installing IPFS (Kubo), initializing your node, adding your document collection to get a CID, creating an IPNS key, and publishing that CID under the IPNS name. Contributors can then resolve your IPNS address to get the latest version and pin it locally.
+The minimal setup involves installing IPFS (Kubo), initializing your node, adding your document collection to get a CID, creating an IPNS key, and publishing that CID under the [[IPNS name]]. Contributors can then resolve your IPNS address to get the latest version and pin it locally.
 
 This approach gives you cryptographically verifiable document versioning with decentralized distribution, while keeping the human coordination simple and lightweight.
 
@@ -263,10 +263,10 @@ When you add a folder to IPFS, you get a CID for the entire folder structure. Ch
 Since CIDs change whenever content changes, you need a way to point to "the latest version" of something. That's what **IPNS** (InterPlanetary Name System) provides.
 
 **How it works:**
-- You create an IPNS name (which looks like a long string starting with `k51q...`)
-- You can publish any CID to that IPNS name
-- Others can resolve your IPNS name to get the current CID
-- You can update the IPNS name to point to new CIDs as your content evolves
+- You create an [[IPNS name]] (which looks like a long string starting with `k51q...`)
+- You can publish any CID to that [[IPNS name]]
+- Others can resolve your [[IPNS name]] to get the current CID
+- You can update the [[IPNS name]] to point to new CIDs as your content evolves
 
 Think of IPNS like a domain name that always points to your latest content, while CIDs are like specific snapshots.
 

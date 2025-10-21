@@ -27,7 +27,7 @@ ipfs add -Qr /path/to/texts     # -Q = quiet (just the CID), -r = recursive
 
 Re-running `ipfs add -r` after edits yields a **new top-level CID** (subfiles’ CIDs stay the same if unchanged). ([Stack Overflow](https://stackoverflow.com/questions/39803954/ipfs-how-to-add-a-file-to-an-existing-folder))
 
-1. Create (once) and publish an IPNS name:
+1. Create (once) and publish an [[IPNS name]]:
 
 ```bash
 ipfs key gen --type=rsa --size=2048 texts-key
@@ -43,7 +43,7 @@ IPNS is a mutable pointer you can republish to when the CID changes; nodes perio
 # Using the CID directly
 ipfs pin add <CID>
 
-# Or follow your IPNS name to the current CID, then pin:
+# Or follow your [[IPNS name]] to the current CID, then pin:
 ipfs name resolve k51q...             # shows /ipfs/<currentCID>
 ipfs pin add <currentCID>
 ```
@@ -78,7 +78,7 @@ love this direction. here’s a lightweight, low-drama set of “how we work” 
 ## 0) Ground rules (philosophy)
 
 * **Snapshots, not merges.** We publish complete, immutable snapshots (CIDs). We avoid concurrent edits to the same files.
-* **One stable pointer.** There is a single “main” IPNS name that always points to the latest accepted release.
+* **One stable pointer.** There is a single “main” [[IPNS name]] that always points to the latest accepted release.
 * **Low ceremony, just enough structure.** Clear ownership and short checklists replace heavy tooling.
 
 ---
