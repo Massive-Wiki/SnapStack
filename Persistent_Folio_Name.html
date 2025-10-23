@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
-    <script src="//lunr-index-1761088143.6955495.js"></script>
+    <script src="//lunr-index-1761224221.1663582.js"></script>
     <script>var index = lunr.Index.load(lunr_index)</script>
     
     
-    <script src="//lunr-posts-1761088143.6955495.js"></script>
+    <script src="//lunr-posts-1761224221.1663582.js"></script>
     <script> function randomPageLink() { return "/"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
     
   </head>
@@ -60,13 +60,18 @@
       </div> <!-- edit this page button -->
       
       <h1>Persistent Folio Name</h1>
-<p><em>This page was mostly written by Claude Sonnet 4.5 in 2025-10, under the supervision of Peter Kaminski. Peter Kaminski takes responsiblity for its content.</em></p>
+<p><em>This page was mostly written by Claude Sonnet 4.5 in 2025-10, under the supervision of Peter Kaminski. Peter Kaminski takes responsibility for its content.</em></p>
 <p>For your information, the page <a class="wikilink" href="//IPNS_name.html">IPNS name</a> is a bridge from early SnapStack documents that use that phrase and the newer discussion here of "Persistent Folio Name".</p>
 <h2>The Persistent Name Goal, and IPNS Solution</h2>
-<p>Content-addressed systems like IPFS generate new hashes whenever content changes. For mutable websites or applications, this means the address changes with every update. IPNS (InterPlanetary Name System) was designed to solve this by providing persistent addresses that point to changing content, but implementing reliable IPNS in practice reveals significant operational challenges.</p>
+<p>Content-addressed systems like IPFS generate new hashes (Content Identifiers) whenever content changes. For mutable websites or applications, this means the content address changes with every update. IPNS (InterPlanetary Name System) was designed to provide persistent addresses that point to changing content. However, implementing persistent (and reliable) IPNS in practice has significant challenges.</p>
 <h2>The IPNS Republishing Problem</h2>
-<p>IPNS records expire and require periodic republishing (typically every 24 hours). Unlike IPFS content pinning, which has mature infrastructure and commercial services, IPNS republishing services are scarce. The IPNS record itself must be actively maintained by a node that has the private key, creating an availability requirement that contradicts IPFS's goal of decentralized persistence.</p>
-<p>Standard IPFS pinning services don't solve this. They keep your content available but don't handle IPNS republishing. You can pin content at <code>/ipfs/Qm...</code> but your <code>/ipns/k51...</code> pointer still needs active republishing.</p>
+<p>IPNS records expire and require periodic republishing (typically every 24 hours; see Note below). Unlike IPFS content pinning, which has mature infrastructure and commercial services, IPNS republishing services are scarce. The IPNS record itself must be actively maintained by a node that has the private key, creating an availability requirement that conflicts with the IPFS goal of decentralized persistence.</p>
+<p>Standard IPFS pinning services don't solve this. They keep content available but do not handle IPNS republishing. You can pin content at <code>/ipfs/Qm...</code> but your <code>/ipns/k51...</code> pointer still needs active republishing.</p>
+<p>Note: on IPNS practical considerations:</p>
+<blockquote>
+<p>The most important thing to consider with IPNS names is how frequently you intend on updating the name and how long a valid record should be cached before checking for an update.<br />
+<a href="https://docs.ipfs.tech/concepts/ipns/#how-ipns-works">https://docs.ipfs.tech/concepts/ipns/#how-ipns-works</a></p>
+</blockquote>
 <h2>Current Solutions</h2>
 <h3>1. Self-Hosted Persistent Node</h3>
 <p>Run your own IPFS node that stays online 24/7 and handles IPNS republishing automatically.</p>
@@ -116,7 +121,7 @@
 <li>DNS centralization (registrar and nameserver dependencies)</li>
 <li>Not truly decentralized</li>
 <li>Propagation delays (though typically seconds to minutes)</li>
-<li>Annual domain renewal</li>
+<li>Annual domain renewal cost</li>
 </ul>
 <p><strong>Publisher ease: High</strong> | <strong>Persistence: High</strong> | <strong>Management: Low</strong></p>
 <h3>4. ENS (Ethereum Name Service)</h3>
@@ -130,7 +135,7 @@
 </ul>
 <p><strong>Cons:</strong></p>
 <ul>
-<li>Requires Ethereum wallet and ETH for gas fees</li>
+<li>Requires Ethereum wallet and ETH for usage fees</li>
 <li>Transaction costs for every update</li>
 <li>Learning curve for blockchain interaction</li>
 <li>Requires ENS-compatible tools/browsers or gateways</li>
@@ -145,12 +150,12 @@
 <li><strong>DNSLink</strong> is practical but defeats decentralization</li>
 <li><strong>ENS</strong> is decentralized but adds cost and complexity</li>
 </ul>
-<p>For most publishers prioritizing ease and persistence over ideological purity, <strong>DNSLink emerges as the pragmatic choice</strong>. It uses boring, reliable DNS infrastructure and can be automated with any DNS provider's API. Yes, it's centralized—but it's centralized on infrastructure that already exists, that you already understand, and that has decades of operational maturity.</p>
+<p>For most publishers prioritizing ease and persistence over pure decentralization, <strong>DNSLink is a pragmatic choice</strong>. It uses well-known, reliable DNS infrastructure and can be automated with any DNS provider API. It is centralized—but it is centralized on infrastructure that already exists, that you already understand, and that has decades of operational maturity.</p>
 <p>For projects where decentralization is paramount and costs are acceptable, <strong>ENS</strong> provides the most decentralized option, though updates require blockchain transactions.</p>
-<p>The uncomfortable truth is that truly decentralized, low-maintenance, easy-to-use persistent addressing remains unsolved. IPNS was the vision, but its execution requires infrastructure that undermines its goals. The ecosystem isn't ready or widely available yet. Until IPNS republishing becomes as commoditized as content pinning, we're left choosing which compromises we can tolerate.</p>
+<p>The truth is that truly decentralized, low-maintenance, easy-to-use persistent addressing remains unsolved. IPNS is a vision, but its execution requires infrastructure that conflicts with its goals. The ecosystem is not ready or widely available yet. Until IPNS republishing becomes as commoditized as content pinning, we are left choosing which compromises we can accept.</p>
 <h2>Practical Recommendation</h2>
 <p><strong>For most use cases:</strong> Start with DNSLink using a DNS provider with API support (Cloudflare, Route53, etc.). Automate updates via CI/CD or deployment scripts. Accept the DNS centralization as a reasonable tradeoff.</p>
-<p><strong>For decentralization-critical projects:</strong> Use ENS and budget for gas fees. Implement update batching to minimize transaction costs.</p>
+<p><strong>For decentralization-critical projects:</strong> Use ENS and budget for usage fees. Implement update batching to minimize transaction costs.</p>
 <p><strong>If vendor lock-in is acceptable:</strong> w3name provides the easiest managed IPNS option, assuming the service remains available.</p>
 <p><strong>Only if you have ops capacity:</strong> Run your own IPFS nodes with monitoring, backups, and ideally geographic redundancy.</p>
 <p>The state of the art is, as of late 2025, still evolving. Persistent addressing in decentralized systems is harder than it looks.</p>
@@ -180,7 +185,7 @@
     
     <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
     
-    <div><em>Site last updated on Tuesday, October 21, 2025 at 23:09 UTC.</em></div>
+    <div><em>Site last updated on Thursday, October 23, 2025 at 12:57 UTC.</em></div>
   </div>
 </footer>
 </body>
